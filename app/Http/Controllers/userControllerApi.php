@@ -990,7 +990,7 @@ class userControllerApi extends Controller
       $file = $request->file;
       $extension = $file->getClientOriginalExtension();
       $filename = rand(111, 99999) . "_mrbean" . '.' . $extension;
-      $url=public_path() . '/story/'.$filename;
+      $url = '/story/' . $filename;
       $file->move(public_path() . '/story/', $filename);
     } else {
       $filename = "";
@@ -1002,8 +1002,6 @@ class userControllerApi extends Controller
     ]);
 
     return response()->json(['status' => 'success', 'data' => null], 200);
-
-
   }
 
 
@@ -1013,29 +1011,31 @@ class userControllerApi extends Controller
     $story = DB::table('story')->get();
     return response()->json(['message' => 'success', 'data' => $story], 200);
   }
-  
-    public function getstory_user($id)
-  {
-    $story = DB::table('story')->where('user',$id)->get();
-    return response()->json(['message' => 'success', 'data' => $story], 200);
-  }
-  
-      public function getstory_profile()
-  {
-      $user=Auth::id();
-      
-      $story = DB::table('story')->where('user',$user)->get();
-    
-    return response()->json(['message' => 'success', 'data' => $story], 200);
-  }
-  
-  
-     public function getstory_delete($id)
-  {
-    $story = DB::table('story')->where('id',$id)->delete();
-    return response()->json(['status' => 'success', 'data' => null], 200);
-  }
-  
-  
 
+  public function getstory_user($id)
+  {
+    $story = DB::table('story')->where('user', $id)->get();
+    return response()->json(['message' => 'success', 'data' => $story], 200);
+  }
+
+  public function getstory_profile()
+  {
+    $user = Auth::id();
+
+    $story = DB::table('story')->where('user', $user)->get();
+
+    return response()->json(['message' => 'success', 'data' => $story], 200);
+  }
+
+
+  public function Existing_story($id)
+  {
+    $story = DB::table('story')->where('user', $id)->exists();
+    $story_count = DB::table('story')->where('user', $id)->count();
+    if ($story) {
+      return response()->json(['status' => 'existing', 'data' => $story_count], 200);
+    } else {
+      return response()->json(['status' => 'Unavailable', 'data' => $story_count], 200);
+    }
+  }
 }
