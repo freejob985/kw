@@ -1028,6 +1028,14 @@ class userControllerApi extends Controller
   }
 
 
+  public function getstory_delete($id)
+  {
+    DB::table('story')->where('id', '=', $id)->delete();
+    
+    return response()->json(['status' => 'success', 'data' => null], 200);
+  }
+
+
   public function Existing_story($id)
   {
     $story = DB::table('story')->where('user', $id)->exists();
