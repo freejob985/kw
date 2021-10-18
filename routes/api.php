@@ -60,7 +60,7 @@ Route::post('add_story','userControllerApi@add_story')->name($prefix.'.'.'add_st
 Route::get('getstory','userControllerApi@getstory')->name($prefix.'.'.'getstory');//done
 Route::get('getstory/user/{id}','userControllerApi@getstory_user')->name($prefix.'.'.'getstory.user');//done
 Route::get('getstory/profile','userControllerApi@getstory_profile')->name($prefix.'.'.'getstory.profile');//done
-Route::get('getstory/delete/{id}','userControllerApi@getstory_delete')->name($prefix.'.'.'getstory.delete');//done
+Route::get('getstory/{id}/delete','userControllerApi@getstory_delete')->name($prefix.'.'.'getstory.delete');//done
 Route::get('existing/story/{id}','userControllerApi@Existing_story')->name($prefix.'.'.'existing.story');//done
 
 
