@@ -25,7 +25,7 @@ Route::get('channels','userControllerApi@getChannels')->name($prefix.'.'.'getCha
 Route::post('forgot_request','userControllerApi@forgot_request')->name($prefix.'.'.'forgot_request');//done
 Route::post('forgot_request_set','userControllerApi@forgot_request_set')->name($prefix.'.'.'forgot_request_set');//done
 Route::get('banners','userControllerApi@banners')->name($prefix.'.'.'banners');//done
-// Route::group(['middleware' => 'auth:api'],function () use ($prefix){
+Route::group(['middleware' => 'auth:api'],function () use ($prefix){
 Route::post('verify','userControllerApi@verify')->name($prefix.'.'.'verify'); //done
 Route::post('initialRoom','userControllerApi@initialRoom')->name($prefix.'.'.'initialRooms');//done
 Route::post('addMessage','userControllerApi@addMessage')->name($prefix.'.'.'addMessage');//done
@@ -80,4 +80,4 @@ Route::post('abbreviation/story','userControllerApi@abbreviation')->name($prefix
 
 
 
-// });
+});
