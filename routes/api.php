@@ -75,6 +75,11 @@ Route::get('abbreviation/get','userControllerApi@abbreviation_get')->name($prefi
 Route::post('ban/{id}','userControllerApi@ban')->name($prefix.'.'.'ban.user');//done
 
 Route::get('get/ban','userControllerApi@get_ban')->name($prefix.'.'.'get.ban');//done
+Route::get('unban/delete/{id}','userControllerApi@unban')->name($prefix.'.'.'unban.delete');//done
+
+
+Route::get('getRoom/uesr/{id}','userControllerApi@getRoom_uesr')->name($prefix.'.'.'get.ban');//done
+
 
 /*
 |--------------------------------------------------------------------------

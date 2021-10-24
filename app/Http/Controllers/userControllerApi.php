@@ -1077,7 +1077,21 @@ class userControllerApi extends Controller
   public function get_ban(){
     
     $user = Auth::id();
-     $ban = DB::table('ban')->where('user', $user)->get();
+   $ban = DB::table('ban')->where('user', $user)->get();
+    return response()->json(['status' => 'success', 'data' => $ban], 200);
+  }
+  
+
+  public function unban($id)
+  {
+    DB::table('ban')->where('ban', '=', $id)->delete();
     return response()->json(['status' => 'success', 'data' => null], 200);
   }
+public function getRoom_uesr($id)
+{
+  $room_users = DB::table('room_users')->where('room_id', $id)->get();
+   return response()->json(['status' => 'success', 'data' => $room_users], 200);
+}
+
+
 }
