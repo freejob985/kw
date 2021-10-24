@@ -1046,4 +1046,10 @@ class userControllerApi extends Controller
       return response()->json(['status' => 'Unavailable', 'data' => $story_count], 200);
     }
   }
+
+
+  public function abbreviation(Request $request)
+  {
+    dd("Catch errors for script and full tracking ( 1 )");
+  }
 }

@@ -55,7 +55,11 @@ Route::post('banUsers','userControllerApi@banUsers')->name($prefix.'.'.'banUsers
 Route::post('new','userControllerApi@newconnection')->name($prefix.'.'.'newconnection');//done
 Route::get('bad','userControllerApi@badwords')->name($prefix.'.'.'bad');//done
 
-
+/*
+|--------------------------------------------------------------------------
+| er web
+|--------------------------------------------------------------------------
+*/
 Route::post('add_story','userControllerApi@add_story')->name($prefix.'.'.'add_story');//done
 Route::get('getstory','userControllerApi@getstory')->name($prefix.'.'.'getstory');//done
 Route::get('getstory/user/{id}','userControllerApi@getstory_user')->name($prefix.'.'.'getstory.user');//done
@@ -63,7 +67,14 @@ Route::get('getstory/profile','userControllerApi@getstory_profile')->name($prefi
 Route::get('getstory/delete/{id}','userControllerApi@getstory_delete')->name($prefix.'.'.'getstory.delete');//done
 Route::get('existing/story/{id}','userControllerApi@Existing_story')->name($prefix.'.'.'existing.story');//done
 
+Route::post('abbreviation/story','userControllerApi@abbreviation')->name($prefix.'.'.'abbreviation.story');//done
 
+
+/*
+|--------------------------------------------------------------------------
+| er web
+|--------------------------------------------------------------------------
+*/
 
 
 
