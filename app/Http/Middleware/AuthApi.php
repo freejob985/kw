@@ -15,9 +15,9 @@ class AuthApi
      */
     public function handle($request, Closure $next)
     {
-        // if(!Auth::guard('api')){
-        //     return 'sorry';
-        // }
+        if(!Auth::guard('api')){
+            return 'sorry';
+        }
         return $next($request);
     }
 }
