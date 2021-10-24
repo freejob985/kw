@@ -72,6 +72,10 @@ Route::post('abbreviation/story','userControllerApi@abbreviation')->name($prefix
 Route::get('abbreviation/get','userControllerApi@abbreviation_get')->name($prefix.'.'.'abbreviation.all');//done
 
 
+Route::post('ban/{id}','userControllerApi@ban')->name($prefix.'.'.'ban.user');//done
+
+Route::get('get/ban','userControllerApi@get_ban')->name($prefix.'.'.'get.ban');//done
+
 /*
 |--------------------------------------------------------------------------
 | er web

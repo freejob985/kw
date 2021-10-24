@@ -1051,8 +1051,8 @@ class userControllerApi extends Controller
   public function abbreviation(Request $request)
   {
     DB::table('abbreviation')->insert([
-      'word' => $request->input('word'),
-      'Abbreviation' => $request->input('Abbreviation'),
+      'word' => $request->word,
+      'Abbreviation' => $request->Abbreviation,
     ]);
     return response()->json(['status' => 'success', 'data' => null], 200);
   }
@@ -1064,6 +1064,20 @@ class userControllerApi extends Controller
     return response()->json(['message' => 'success', 'data' => $story], 200);
   }
 
+  public function ban($id)
+  {
+    $user = Auth::id();
+    DB::table('ban')->insert([
+      'user' => $user,
+      'ban' => $id,
+    ]);
+    return response()->json(['status' => 'success', 'data' => null], 200);
+  }
 
-
+  public function get_ban(){
+    
+    $user = Auth::id();
+     $ban = DB::table('ban')->where('user', $user)->get();
+    return response()->json(['status' => 'success', 'data' => null], 200);
+  }
 }
