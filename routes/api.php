@@ -69,6 +69,7 @@ Route::get('getstory/delete/{id}','userControllerApi@getstory_delete')->name($pr
 Route::get('existing/story/{id}','userControllerApi@Existing_story')->name($prefix.'.'.'existing.story');//done
 
 Route::post('abbreviation/story','userControllerApi@abbreviation')->name($prefix.'.'.'abbreviation.story');//done
+Route::get('abbreviation/get','userControllerApi@abbreviation_get')->name($prefix.'.'.'abbreviation.all');//done
 
 
 /*

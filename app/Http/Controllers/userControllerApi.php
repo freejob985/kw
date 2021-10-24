@@ -1056,4 +1056,14 @@ class userControllerApi extends Controller
     ]);
     return response()->json(['status' => 'success', 'data' => null], 200);
   }
+
+
+  public function abbreviation_get()
+  {
+    $story = DB::table('abbreviation')->get();
+    return response()->json(['message' => 'success', 'data' => $story], 200);
+  }
+
+
+
 }
