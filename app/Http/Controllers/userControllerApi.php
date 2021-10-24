@@ -1031,7 +1031,7 @@ class userControllerApi extends Controller
   public function getstory_delete($id)
   {
     DB::table('story')->where('id', '=', $id)->delete();
-    
+
     return response()->json(['status' => 'success', 'data' => null], 200);
   }
 
@@ -1050,6 +1050,10 @@ class userControllerApi extends Controller
 
   public function abbreviation(Request $request)
   {
-    dd("Catch errors for script and full tracking ( 1 )");
+    DB::table('abbreviation')->insert([
+      'word' => $request->input('word'),
+      'Abbreviation' => $request->input('Abbreviation'),
+    ]);
+    return response()->json(['status' => 'success', 'data' => null], 200);
   }
 }
