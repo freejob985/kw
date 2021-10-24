@@ -1048,7 +1048,7 @@ class userControllerApi extends Controller
   }
 
 
-  public function abbreviation(Request $request)
+  public function abbre11viation(Request $request)
   {
     dd("Catch errors for script and full tracking ( 1 )");
   }
