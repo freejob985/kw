@@ -1076,8 +1076,9 @@ class userControllerApi extends Controller
 
   public function get_ban(){
     
+    
     $user = Auth::id();
-   $ban = DB::table('ban')->where('user', $user)->get();
+   $ban = DB::table('ban')->where('user', $user)->pluck('ban');
     return response()->json(['status' => 'success', 'data' => $ban], 200);
   }
   
