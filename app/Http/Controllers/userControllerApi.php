@@ -1089,7 +1089,7 @@ class userControllerApi extends Controller
   }
 public function getRoom_uesr($id)
 {
-  $room_users = DB::table('room_users')->where('room_id', $id)->get();
+  $room_users = DB::table('room_users')->where('room_id', $id)->count();
    return response()->json(['status' => 'success', 'data' => $room_users], 200);
 }
 
