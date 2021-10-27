@@ -1132,12 +1132,8 @@ class userControllerApi extends Controller
 
   public function getstory_()
   {
-
-
-    $user =  DB::table('story')->distinct('user')->pluck('user')->toArray();
-    dd($user);
-
-    $User = User::with('story')->get();
+    $user_ =  DB::table('story')->distinct('user')->pluck('user')->toArray();
+    $User = User::with('story')->whereIn('user', $user_)->get();
     return response()->json(['status' => 'success', 'data' => $User], 200);
   }
 }
