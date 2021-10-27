@@ -54,7 +54,7 @@ Route::post('addNewRoom','userControllerApi@addNewRoom')->name($prefix.'.'.'addN
 Route::post('banUsers','userControllerApi@banUsers')->name($prefix.'.'.'banUsers');//done
 Route::post('new','userControllerApi@newconnection')->name($prefix.'.'.'newconnection');//done
 Route::get('bad','userControllerApi@badwords')->name($prefix.'.'.'bad');//done
-});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -85,7 +85,7 @@ Route::get('getRoom/uesr/{id}','userControllerApi@getRoom_uesr')->name($prefix.'
 |--------------------------------------------------------------------------
 */
 
-
+});
 
 
 
