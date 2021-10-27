@@ -1113,7 +1113,7 @@ class userControllerApi extends Controller
     $file = $request->file('img');
 
     if ($request->hasFile('img')) {
-      $file = $request->file;
+      $file = $request->img;
       $extension = $file->getClientOriginalExtension();
       $filename = rand(111, 99999) . "_mrbean" . '.' . $extension;
       $url = '/ads/' . $filename;
