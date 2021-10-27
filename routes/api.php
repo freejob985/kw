@@ -79,6 +79,10 @@ Route::get('get/ban','userControllerApi@get_ban')->name($prefix.'.'.'get.ban');/
 Route::get('unban/delete/{id}','userControllerApi@unban')->name($prefix.'.'.'unban.delete');//done
 
 Route::get('getRoom/uesr/{id}','userControllerApi@getRoom_uesr')->name($prefix.'.'.'getRoom.uesr');//done
+
+Route::post('add_ads','userControllerApi@add_ads')->name($prefix.'.'.'add_ads');//done
+
+
 /*
 |--------------------------------------------------------------------------
 | er web

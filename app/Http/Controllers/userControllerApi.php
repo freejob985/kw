@@ -264,7 +264,7 @@ class userControllerApi extends Controller
     $newMessage->setAttribute('username', Auth::user()->name);
     $newMessage->setAttribute('userimage', url('images/profiles/') . '/' . Auth::user()->image);
     $newMessage->setAttribute('status', 'تم الارسال');
-    broadcast(new SendMessageToRoom(['message' => $newMessage, 'user' => Auth::user(), 'room' => $request->room,"test event"]))->toOthers();
+    broadcast(new SendMessageToRoom(['message' => $newMessage, 'user' => Auth::user(), 'room' => $request->room, "test event"]))->toOthers();
     return response()->json(['success' => 'done', 'newMessage' => $newMessage], 200);
   }
   public function getchat(Request $request)
@@ -1074,25 +1074,52 @@ class userControllerApi extends Controller
     return response()->json(['status' => 'success', 'data' => null], 200);
   }
 
-  public function get_ban(){
-    
-    
+  public function get_ban()
+  {
+
+
     $user = Auth::id();
-   $ban = DB::table('ban')->where('user', $user)->pluck('ban');
+    $ban = DB::table('ban')->where('user', $user)->pluck('ban');
     return response()->json(['status' => 'success', 'data' => $ban], 200);
   }
-  
+
 
   public function unban($id)
   {
     DB::table('ban')->where('ban', '=', $id)->delete();
     return response()->json(['status' => 'success', 'data' => null], 200);
   }
-public function getRoom_uesr($id)
-{
-  $room_users = DB::table('room_users')->where('room_id', $id)->count();
-   return response()->json(['status' => 'success', 'data' => $room_users], 200);
-}
+  public function getRoom_uesr($id)
+  {
+    $room_users = DB::table('room_users')->where('room_id', $id)->count();
+    return response()->json(['status' => 'success', 'data' => $room_users], 200);
+  }
 
 
+  public function add_ads(Request $request)
+  {
+
+    $this->validate($request, [
+      'img' => 'required',
+    ]);
+
+    $file = $request->file('img');
+
+    if ($request->hasFile('img')) {
+      $file = $request->file;
+      $extension = $file->getClientOriginalExtension();
+      $filename = rand(111, 99999) . "_mrbean" . '.' . $extension;
+      $url = '/ads/' . $filename;
+      $file->move(public_path() . '/ads/', $filename);
+    } else {
+      $filename = "";
+    }
+
+    DB::table('ads')->insert([
+      'img' => $url,
+      'link' => $request->input('link'),
+    ]);
+
+    return response()->json(['status' => 'success', 'data' => null], 200);
+  }
 }
