@@ -1089,7 +1089,7 @@ class userControllerApi extends Controller
     return response()->json(['status' => 'success', 'data' => $ads], 200);
   }
 
-  
+
 
   public function unban($id)
   {
@@ -1132,9 +1132,12 @@ class userControllerApi extends Controller
 
   public function getstory_()
   {
+
+
+    $user =  DB::table('story')->distinct('user')->pluck('user')->toArray();
+    dd($user);
+
     $User = User::with('story')->get();
     return response()->json(['status' => 'success', 'data' => $User], 200);
-
-
   }
 }
