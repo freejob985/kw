@@ -264,7 +264,7 @@ class userControllerApi extends Controller
     $newMessage->setAttribute('username', Auth::user()->name);
     $newMessage->setAttribute('userimage', url('images/profiles/') . '/' . Auth::user()->image);
     $newMessage->setAttribute('status', 'تم الارسال');
-    broadcast(new SendMessageToRoom(['message' => $newMessage, 'user' => Auth::user(), 'room' => $request->room]))->toOthers();
+    broadcast(new SendMessageToRoom(['message' => $newMessage, 'user' => Auth::user(), 'room' => $request->room,"test event"]))->toOthers();
     return response()->json(['success' => 'done', 'newMessage' => $newMessage], 200);
   }
   public function getchat(Request $request)
