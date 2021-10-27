@@ -1129,4 +1129,12 @@ class userControllerApi extends Controller
 
     return response()->json(['status' => 'success', 'data' => null], 200);
   }
+
+  public function getstory_()
+  {
+    $User = User::with('story')->get();
+    return response()->json(['status' => 'success', 'data' => $User], 200);
+
+
+  }
 }

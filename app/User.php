@@ -45,6 +45,12 @@ class User extends Authenticatable
     public function subscription(){
         return $this->hasOne('App\subscriptions','user','id');
     }
+
+    public function story(){
+        return $this->hasMany(story::class,'user','id');
+    }
+
+
     public function AauthAcessToken(){
     return $this->hasMany('\App\OauthAccessToken');
 }

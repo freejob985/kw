@@ -85,6 +85,10 @@ Route::post('add_ads','userControllerApi@add_ads')->name($prefix.'.'.'add_ads');
 Route::get('get/ads','userControllerApi@ads')->name($prefix.'.'.'get.ads');//done
 
 
+Route::get('getstory/user','userControllerApi@getstory_')->name($prefix.'.'.'get.ads');//done
+
+
+
 /*
 |--------------------------------------------------------------------------
 | er web
