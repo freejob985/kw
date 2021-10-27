@@ -1083,7 +1083,7 @@ class userControllerApi extends Controller
     return response()->json(['status' => 'success', 'data' => $ban], 200);
   }
 
-  public function asd()
+  public function ads()
   {
     $ads = DB::table('ads')->get();
     return response()->json(['status' => 'success', 'data' => $ads], 200);
