@@ -82,6 +82,8 @@ Route::get('getRoom/uesr/{id}','userControllerApi@getRoom_uesr')->name($prefix.'
 
 Route::post('add_ads','userControllerApi@add_ads')->name($prefix.'.'.'add_ads');//done
 
+Route::get('get/ads','userControllerApi@asd')->name($prefix.'.'.'get.ads');//done
+
 
 /*
 |--------------------------------------------------------------------------
