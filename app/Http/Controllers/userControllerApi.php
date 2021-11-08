@@ -1222,4 +1222,13 @@ class userControllerApi extends Controller
     $User = User::with('story')->whereIn('id', $user_)->get();
     return response()->json(['status' => 'success', 'data' => $User], 200);
   }
+
+  public function get_banuser()
+  {
+    $user = Auth::id();
+    $ban = DB::table('ban')->where('user', $user)->pluck('ban');
+    return response()->json(['status' => 'success', 'data' => $ban], 200);
+  }
+
+
 }

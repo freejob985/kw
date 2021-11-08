@@ -94,6 +94,10 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('getstory/user','userControllerApi@getstory_')->name($prefix.'.'.'get.ads');//done
 
+
+
+    Route::get('get/ban/user','userControllerApi@get_banuser')->name($prefix.'.'.'get.bans.user');//done
+
     /*
     |--------------------------------------------------------------------------
     | er web
