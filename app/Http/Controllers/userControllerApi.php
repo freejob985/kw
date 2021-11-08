@@ -23,6 +23,8 @@ use App\rooms_ban;
 use App\available_users;
 use App\available_connections;
 use App\badWords;
+use App\story;
+use App\StoryUser;
 use App\subscriptions;
 use Hash;
 use Auth;
@@ -37,15 +39,18 @@ class userControllerApi extends Controller
 {
 
   protected $UsersInRoom = 1;
-  public function __constructor()
-  {
-    \Auth::shouldUse('api');
-  }
+//   public function __constructor()
+//   {
+//     // \Auth::shouldUse('api');
+//     $this->middleware('auth:api')->except('abbreviation_get');
+//   }
 
   public function badwords()
   {
     return badWords::all()->pluck('word')->toArray();
   }
+
+
   public function registerGuest(Request $request)
   {
     $validator  = Validator::make($request->all(), [
@@ -64,11 +69,20 @@ class userControllerApi extends Controller
     $user = new User();
     $user->name = $request->name;
     $user->verified = 1;
+    if ($request->gender == 1) {
+        $avatar = 'boy.png';
+    } else {
+        $avatar = 'girl.png';
+    }
+    $user->image = $avatar;
+    $user->gender = $request->gender;
     $user->save();
     $token = $user->createToken('oEY9EtZ3Kpjyf8nx5EWg63JtFlJCvwhSsUluKpNh')->accessToken;
     $response = ['token' => $token, 'user' => $user];
     return response($response, 200);
   }
+
+
   private function sendMessage($message, $recipients)
   {
     $basic  = new \Nexmo\Client\Credentials\Basic('5edf69f5', 'Mamoudskjfirhew854');
@@ -273,10 +287,12 @@ class userControllerApi extends Controller
     $another = $request->user;
     $checkPrivate = privateChat::where(function ($query) use ($another) {
       $query->where("parent_id", Auth::id())
-        ->where("child_id", $another);
+        ->where("child_id", $another)
+        ->where('hide_chat', 0);
     })->orWhere(function ($query) use ($another) {
       $query->where("parent_id",  $another)
-        ->where("child_id", Auth::id());
+        ->where("child_id", Auth::id())
+        ->where('hide_chat', 0);
     })->first();
     if ($checkPrivate) {
       $chat = $checkPrivate->id;
@@ -473,12 +489,47 @@ class userControllerApi extends Controller
     });
     return response()->json(['success' => 'done', 'messages' => $getMessages], 200);
   }
+
+  public function hideChat(Request $request, privateChat $chat)
+  {
+    $chat->hide_chat = 1;
+    $chat->save();
+    return response()->json(['success' => 'done', 'chat' => $chat], 200);
+  }
+
+  public function hideAllChat(Request $request)
+  {
+    $active_chats = privateChat::where("parent_id", auth()->id())->where("hide_chat", 0)->get();
+
+    //?hide all chats
+    if(count($active_chats) > 0){
+        $active_chats->each(function($chat){
+            $chat->update([
+                'hide_chat' => 1,
+            ]);
+        });
+    }
+
+    //?toggle chats back on if all chats are hidden
+    else{
+        privateChat::where("parent_id", auth()->id())->where("hide_chat", 1)->each(function($chat){
+            $chat->update([
+                'hide_chat' => 0,
+            ]);
+        });
+    }
+
+    return response()->json(['success' => 'done', 'data' => null], 200);
+  }
+
   public function getPrivateNotifications()
   {
     $getPrivateChats = privateChat::where(function ($query) {
-      $query->where("parent_id", Auth::id());
+      $query->where("parent_id", Auth::id())
+      ->where("hide_chat", 0);
     })->orWhere(function ($query) {
-      $query->where("child_id", Auth::id());
+      $query->where("child_id", Auth::id())
+      ->where("hide_chat", 0);
     })->get();
     $privateNotify = [];
     foreach ($getPrivateChats as $getprivate) {
@@ -545,7 +596,7 @@ class userControllerApi extends Controller
   }
   public function get_profile()
   {
-    return response()->json(['success' => 'done', 'profile' => Auth::user()], 200);
+    return response()->json(['success' => 'done', 'profile' => auth()->user()->load('plan')], 200);
   }
   public function updateProfileImage(Request $request)
   {
@@ -995,26 +1046,27 @@ class userControllerApi extends Controller
     } else {
       $filename = "";
     }
-    DB::table('story')->insert([
-      'file' => $url,
-      'user' => Auth::id(),
-      'filetype' => $filetype,
+
+    $story = Story::create([
+        'file' => $url,
+        'user' => auth()->id(),
+        'filetype' => $filetype,
     ]);
 
-    return response()->json(['status' => 'success', 'data' => null], 200);
+    return response()->json(['status' => 'success', 'data' => $story], 200);
   }
 
 
 
   public function getstory()
   {
-    $story = DB::table('story')->get();
+    $story = story::get();
     return response()->json(['message' => 'success', 'data' => $story], 200);
   }
 
   public function getstory_user($id)
   {
-    $story = DB::table('story')->where('user', $id)->get();
+    $story = story::where('user', $id)->get();
     return response()->json(['message' => 'success', 'data' => $story], 200);
   }
 
@@ -1022,7 +1074,7 @@ class userControllerApi extends Controller
   {
     $user = Auth::id();
 
-    $story = DB::table('story')->where('user', $user)->get();
+    $story = story::where('user', $user)->with('users')->get();
 
     return response()->json(['message' => 'success', 'data' => $story], 200);
   }
@@ -1030,7 +1082,7 @@ class userControllerApi extends Controller
 
   public function getstory_delete($id)
   {
-    DB::table('story')->where('id', '=', $id)->delete();
+    story::where('id', '=', $id)->delete();
 
     return response()->json(['status' => 'success', 'data' => null], 200);
   }
@@ -1038,8 +1090,8 @@ class userControllerApi extends Controller
 
   public function Existing_story($id)
   {
-    $story = DB::table('story')->where('user', $id)->exists();
-    $story_count = DB::table('story')->where('user', $id)->count();
+    $story = story::where('user', $id)->exists();
+    $story_count = story::where('user', $id)->count();
     if ($story) {
       return response()->json(['status' => 'existing', 'data' => $story_count], 200);
     } else {
@@ -1047,6 +1099,40 @@ class userControllerApi extends Controller
     }
   }
 
+  public function storySeen(Request $request, story $story)
+  {
+    //?if story user is currently authenticated user:
+    if($story->user == auth()->id()){
+        return response()->json(['status' => 'Unavailable', 'data' => null], 200);
+    }
+    else{
+        //if user has already seen this story:
+        if(StoryUser::where("user_id", auth()->id())->where("story_id", $story->id)->first()){
+            return response()->json(['status' => 'Unavailable', 'data' => null], 200);
+        }
+        else{
+            StoryUser::create([
+                "user_id" => auth()->id(),
+                "story_id" => $story->id,
+            ]);
+
+            return response()->json(['status' => 'success', 'data' => null], 200);
+        }
+    }
+  }
+
+  public function getStoryViews(Request $request, story $story)
+  {
+    $story_users = StoryUser::where("story_id", $story->id)->get();
+    $users_temp = [];
+    foreach($story_users as $story_user){
+        $users_temp[] = $story_user->user;
+    }
+    $story->users = $users_temp;
+    $story->views = count($story_users);
+    return response()->json(['status' => 'success', 'data' => $story], 200);
+
+  }
 
   public function abbreviation(Request $request)
   {

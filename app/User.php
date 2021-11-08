@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'gender'
     ];
 
     /**
@@ -50,9 +50,8 @@ class User extends Authenticatable
         return $this->hasMany(story::class,'user','id');
     }
 
-
     public function AauthAcessToken(){
     return $this->hasMany('\App\OauthAccessToken');
 }
-    
+
 }
